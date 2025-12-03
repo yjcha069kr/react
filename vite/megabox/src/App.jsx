@@ -1,9 +1,10 @@
-import "./App.css";
+import BoxOfficeCard from './BoxOfficeCard.jsx';
+import {datas} from './data.js';
 
 function App() {
     return (
         <div className="box_office">
-            <BoxOfficeCard />
+            {datas.map((ele)=>{return<BoxOfficeCard key={ele.rank} data={ele} />})}
         </div>
     );
 }
