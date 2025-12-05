@@ -123,10 +123,7 @@ function Update(props) {
                         name="body"
                         placeholder="body"
                         value={body}
-                        /* 
-                          HTML의 onchange: 값이 바뀌거나 마우스 포인터가 바깥쪽으로 빠져나갈 때 호출
-                          React의 onChange: 값을 입력할 때마다 호출
-                         */
+                        /* HTML의 onchange는 값이 바뀌거나 마우스 포인터가 바깥쪽으로 빠져나갈 때 호출되지만, 리액트의 onChange는 값을 입력할 때마다 호출된다. */
                         onChange={(e) => {
                             console.log(e.target.value);
                             setBody(e.target.value);
@@ -181,6 +178,7 @@ function App() {
         content = <Article title={title} body={body}></Article>;
 
         contentControl = (
+            <>
             <li>
                 {/* 갱신(Update) 버튼 */}
                 <a
@@ -193,6 +191,20 @@ function App() {
                     Update
                 </a>
             </li>
+            <li>
+                <input type="button" value="Delete" onClick={()=>{
+                    const newTopics = [];
+                    for (let i = 0; i < topics.length; i++) {
+                        if (topics[i].id !== id) {
+                            // '선택한 id와 같지않은 항목만 배열에 추가'
+                            newTopics.push(topics[i]);
+                        }
+                    }
+                    setTopics(newTopics);
+                    setMode('WELCOME');
+                }} />
+            </li>
+            </>
         );
         console.log("contentControl", contentControl);
     } else if (mode === "CREATE") {
@@ -200,11 +212,11 @@ function App() {
             <Create
                 onCreate={(title, body) => {
                     const newTopic = { id: nextId, title: title, body: body };
-            /* 
-              const newValue = [...value]
-              newValue 변경
-              setValue(newValue)
-            */
+                /* 
+                    const newValue = [...value]
+                    newValue 변경
+                    setValue(newValue)
+                */
                     const newTopics = [...topics];
                     newTopics.push(newTopic);
                     setTopics(newTopics);
@@ -261,7 +273,6 @@ function App() {
                     setMode("WELCOME");
                 }}
             ></Header>
-
             {/* 내비게이션 */}
             <Nav
                 topics={topics}
@@ -271,10 +282,8 @@ function App() {
                     setId(_id);
                 }}
             ></Nav>
-
             {/* 아티클 */}
             {content}
-            
             <ul>
                 <li>
                     {/* 생성(Create) = 추가(Insert) 버튼 */}
